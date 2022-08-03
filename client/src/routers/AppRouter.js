@@ -1,9 +1,8 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import Admin from '../components/Admin';
 import Home from '../components/Home';
 import Info from '../components/Info';
-import MainLayout from '../components/layouts/MainLayout';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import roles from '../helpers/roles';
@@ -29,8 +28,6 @@ import Facturacion from '../components/Restaurante/Facturacion';
 
 export default function AppRouter() {
   return (
-    <BrowserRouter>
-      <MainLayout>
         <Switch>
           <PublicRoute exact path={routes.home} component={Home}/>
           <PrivateRoute hasRole={roles.admin} exact path={routes.admin.admin} component={Admin} />
@@ -55,7 +52,5 @@ export default function AppRouter() {
 
           <Route exact path="*" component={NotFound} />
         </Switch>
-      </MainLayout>
-    </BrowserRouter>
   )
 }
