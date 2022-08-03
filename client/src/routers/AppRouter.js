@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Admin from '../components/Admin';
 import Home from '../components/Home';
 import Info from '../components/Info';
@@ -7,6 +7,7 @@ import MainLayout from '../components/layouts/MainLayout';
 import PrivateRoute from './PrivateRoute';
 import PublicRoute from './PublicRoute';
 import roles from '../helpers/roles';
+import routes from './routes';
 
 import Login from '../components/Login';
 import Account from '../components/Account';
@@ -21,6 +22,7 @@ import Empleados from '../components/Restaurante/Empleados'
 import Proveedores from '../components/Restaurante/Proveedores';
 import Productos from '../components/Restaurante/Productos';
 import Reportes from '../components/Restaurante/Reportes';
+
 import Clientes from '../components/Restaurante/Clientes';
 import Facturacion from '../components/Restaurante/Facturacion';
 
@@ -29,29 +31,30 @@ export default function AppRouter() {
   return (
     <BrowserRouter>
       <MainLayout>
-        <Routes>
-          <Route exact path="/" element={<PublicRoute><Home /></PublicRoute>} />
-          <Route hasRole="admin" exact path="/admin" element={<PrivateRoute><Admin /></PrivateRoute>} />
-          <Route exact path="/info" element={<Info />} />
-          <Route exact path="/login" element={<PublicRoute><Login /></PublicRoute>} />
-          <Route exact path="/account" element={<PrivateRoute><Account /></PrivateRoute>}/>
-          <Route exact path="/help" element={<Help />}/>
+        <Switch>
+          <PublicRoute exact path={routes.home} component={Home}/>
+          <PrivateRoute hasRole={roles.admin} exact path={routes.admin.admin} component={Admin} />
+          <Route exact path={routes.info} component={Info} />
+          <PublicRoute exact path={routes.login} component={Login} />
+          <PrivateRoute exact path={routes.account} component={Account}/>
+          <Route exact path={routes.help} component={Help}/>
 
-          <Route exact path="/admin/restaurantes" element={<PrivateRoute><Restaurantes/></PrivateRoute>}/>
-          <Route exact path="/admin/usuarios" element={<PrivateRoute><Usuarios/></PrivateRoute>}/>
-          <Route exact path="/admin/reportes" element={<PrivateRoute><ReportesAdmin/></PrivateRoute>}/>
+          <PrivateRoute hasRole={roles.admin} exact path={routes.admin.restaurantes} component={Restaurantes}/>
+          <PrivateRoute hasRole={roles.admin} exact path={routes.admin.usuarios} component={Usuarios}/>
+          <PrivateRoute hasRole={roles.admin} exact path={routes.admin.adminReportes} component={ReportesAdmin}/>
 
-          <Route exact path="/empleados/:restauranteId" element={<PrivateRoute><Empleados/></PrivateRoute>}/>
-          <Route exact path="/proveedores/:restauranteId" element={<PrivateRoute><Proveedores/></PrivateRoute>}/>
-          <Route exact path="/productos/:restauranteId" element={<PrivateRoute><Productos/></PrivateRoute>}/>
-          <Route exact path="/reportes/:restauranteId" element={<PrivateRoute><Reportes/></PrivateRoute>}/>
+          <PrivateRoute hasRole={roles.manager} exact path={routes.empleados()} component={Empleados}/>
+          
+          <PrivateRoute hasRole={roles.supervisor} exact path={routes.proveedores()} component={Proveedores}/>
+          <PrivateRoute hasRole={roles.supervisor} exact path={routes.productos()} component={Productos}/>
+          <PrivateRoute hasRole={roles.supervisor} exact path={routes.reportes()} component={Reportes}/>
 
-          <Route hasRole={roles.employee} exact path="/clientes/:restauranteId" element={<PrivateRoute><Clientes/></PrivateRoute>}/>
-          <Route hasRole={roles.employee} exact path="/facturacion/:restauranteId" element={<PrivateRoute><Facturacion/></PrivateRoute>}/>
+          <PrivateRoute hasRole={roles.employee} exact path={routes.clientes()} component={Clientes}/>
+          <PrivateRoute hasRole={roles.employee} exact path={routes.facturacion()} component={Facturacion}/>
 
 
-          <Route exact path="*" element={<NotFound />} />
-        </Routes>
+          <Route exact path="*" component={NotFound} />
+        </Switch>
       </MainLayout>
     </BrowserRouter>
   )

@@ -1,14 +1,17 @@
 import React from 'react'
-import {Navigate} from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import useAuth from '../auth/useAuth';
+import routes from './routes';
 
 
-const PrivateRoute = ({hasRole: acceso, children }) => {
-    const {user} = useAuth();
+export default function PrivateRoute({ hasRole: role, ...rest }) {
+  const { hasRole, isLogged } = useAuth();
 
-    if (!user) return <Navigate to="/login" />;
-    return(
-      children
-    );
-  };
-export default PrivateRoute;
+  if (role && !hasRole(role)) return <Redirect to="/*" />
+
+  if (!isLogged()) return <Redirect to={routes.login} />
+
+  return (
+    <Route {...rest} />
+  )
+}
