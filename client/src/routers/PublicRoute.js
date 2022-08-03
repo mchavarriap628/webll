@@ -1,18 +1,13 @@
 import React from 'react'
-import {Navigate} from 'react-router-dom';
+import { Redirect, Route } from 'react-router-dom';
 import useAuth from '../auth/useAuth';
+import routes from './routes';
 
 
-const PublicRoute = ({ children }) => {
-    //const user = {id:1, role: 'regular'};
-    //const user = false;
-
-    const {user} = useAuth();
-
-    if (user) return <Navigate to="/account" />;
-    return children;
-  };
-  
-  
-  
-  export default PublicRoute;
+export default function PublicRoute(props) {
+    const { isLogged } = useAuth();
+    if (isLogged()) return <Redirect to={routes.info}/>
+    return (
+        <Route {...props} />
+    )
+}
