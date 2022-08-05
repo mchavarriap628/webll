@@ -1,9 +1,9 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom';
 import useAuth from '../auth/useAuth'
-import { Link } from 'react-router-dom';
-import { Container, Row, Col, Card } from 'react-bootstrap';
-import routes from '../routers/routes';
+//import { Link } from 'react-router-dom';
+import { Row, Col, Card } from 'react-bootstrap';
+//import routes from '../routers/routes';
 
 const userCredentials = {};
 
